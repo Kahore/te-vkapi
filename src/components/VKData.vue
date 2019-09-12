@@ -9,7 +9,9 @@
       </h3>
       <div v-if="isAuth">
         <div v-for="(friend,index) in friendList" :key="index">
-          <a :href="'https://vk.com/id'+friend.id">{{friend.first_name +' ' + friend.last_name}}</a>
+          <a
+          target="_blank"
+          :href="'https://vk.com/id'+friend.id">{{friend.first_name +' ' + friend.last_name}}</a>
         </div>
       </div>
     </div>
@@ -35,11 +37,15 @@ export default {
   },
   methods: {
     async _loadData (targetURL) {
+      // @proxyUrl add headers to ajax query
       let proxyUrl = 'https://cors-anywhere.herokuapp.com/'
       let response = await fetch(proxyUrl + targetURL)
       let text = await response.text()
       return JSON.parse(text)
     },
+    /*
+     * setUserFriend загружает 5 друзей авторизованного пользователя
+     */
     setUserFriend () {
       let userAuth = this.$store.getters.userAuth
       let targetUrl = 'https://api.vk.com/method/friends.get?user_id=' + userAuth.user_id + '&fields=domain&order=hints&count=5&access_token=' + userAuth.access_token + '&v=5.101'
@@ -47,6 +53,9 @@ export default {
         this.$store.dispatch('MUTATE_USER_FRIENDS', res)
       })
     },
+    /*
+     * setUserInfo загружает информвцию об авторизованном пользователе
+     */
     setUserInfo () {
       let userAuth = this.$store.getters.userAuth
       let targetUrl = 'https://api.vk.com/method/users.get?user_id=' + userAuth.user_id + '&access_token=' + userAuth.access_token + '&v=5.101'
@@ -55,6 +64,9 @@ export default {
         this.isLoadnig = false
       })
     },
+    /*
+     * getAccessToken отпределяет, если ли window.location.hash и разбирает данные после авторизации vk
+     */
     async getAccessToken () {
       let hash = window.location.hash
       if (hash.length !== 0) {
