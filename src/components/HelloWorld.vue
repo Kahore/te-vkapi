@@ -17,6 +17,7 @@ export default {
   name: 'HelloWorld',
   methods: {
     loginVK () {
+      let self = this
       VK.Auth.login(
       // callback-функция, которая будет вызвана после авторизации
         function (response) {
@@ -31,7 +32,7 @@ export default {
              user.id  - идентификатор пользователя;
              user.nickname -  отчество или никнейм (если указано);
              */
-            this.$store.dispatch('MUTATE_USER', user)
+            self.$store.dispatch('MUTATE_USER', user)
           } else if (response.status === 'not_authorized') { // пользователь авторизован в ВКонтакте, но не разрешил доступ приложению;
 
           } else if (response.status === 'unknown') { // пользователь не авторизован ВКонтакте.
