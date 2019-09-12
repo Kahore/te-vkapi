@@ -7,7 +7,8 @@ export default new Vuex.Store({
   state: {
     userInfo: {},
     userAuth: {},
-    friendList: []
+    friendList: [],
+    isAuth: false
   },
   getters: {
     userInfo: state => {
@@ -29,6 +30,7 @@ export default new Vuex.Store({
     },
     AUTH_USER (state, payload) {
       state.userAuth = payload
+      state.isAuth = true
     }
   },
   actions: {
