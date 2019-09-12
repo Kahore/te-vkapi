@@ -1,21 +1,50 @@
 <template>
   <div class="hello">
     <button
+      v-if="!isAuth"
       type="button"
-      @click="loginVK">Войти</button>
+      @click="loginVK"
+      >Войти</button>
       <a href="https://oauth.vk.com/authorize?client_id=7132009&display=page&redirect_uri=https://te-vk.herokuapp.com&scope=offline,friends&response_type=token&v=5.101">Войти</a>
     <button
+      v-if="isAuth"
       type="button"
       @click="logoutVK">Выйти</button>
     <button
+      v-if="isAuth"
       type="button"
      @click="setUserFriend">Получить список друзей</button>
+     <div v-if="isAuth">
+       Авторизация под: {{ authUserName }}
+     </div>
+     <div v-if="isAuth">
+       <div v-for="(friend,index) in friendList" :key="index">
+        <p>{{friend.first_name + friend.last_name}}</p>
+       </div>
+       Авторизация под: {{ authUserName }}
+     </div>
   </div>
 </template>
 
 <script>
 export default {
   name: 'HelloWorld',
+  computed: {
+    friendList () {
+      return this.$store.getters.friendList
+    },
+    isAuth () {
+      if (localStorage.getItem('vk_auth')) {
+        return true
+      } else {
+         return false
+      }
+    },
+    authUserName() {
+      let user = this.$store.getters.userInfo
+      return user.first_name + ' ' + user.last_name
+    }
+  },
   methods: {
     loginVK () {
       // var selfVue = this
