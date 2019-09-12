@@ -30,7 +30,8 @@ export default {
     async getPhotoVK () {
       let userAuth = this.$store.getters.userAuth
       var proxyUrl = 'https://cors-anywhere.herokuapp.com/',
-    targetUrl = 'https://api.vk.com/method/users.get?user_id='+userAuth.user_id+'&access_token='+userAuth.access_token+'&v=5.101'
+    // targetUrl = 'https://api.vk.com/method/users.get?user_id='+userAuth.user_id+'&access_token='+userAuth.access_token+'&v=5.101'
+      targetUrl = 'https://api.vk.com/method/friends.get?user_id='+userAuth.user_id+'&access_token='+userAuth.access_token+'&order=hints&count=5&v=5.101'
 let response = await fetch(proxyUrl + targetUrl);
 
     let text = await response.text();
