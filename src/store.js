@@ -33,10 +33,10 @@ export default new Vuex.Store({
   },
   actions: {
     MUTATE_USER ({ commit }, payload) {
-      commit('MUTATE_USER', payload)
+      commit('MUTATE_USER', payload.response[0])
     },
     MUTATE_USER_FRIENDS ({ commit }, payload) {
-      commit('MUTATE_USER_FRIENDS', payload)
+      commit('MUTATE_USER_FRIENDS', payload.response.items)
     },
     AUTH_USER ({ commit }, payload) {
       localStorage.setItem('vk_auth', JSON.stringify(payload))

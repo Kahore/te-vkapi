@@ -34,11 +34,12 @@ export default {
       var targetUrl = 'https://api.vk.com/method/friends.get?user_id=' + userAuth.user_id + '&fields=domain&order=hints&count=5&access_token=' + userAuth.access_token + '&v=5.101'
       let response = await fetch(proxyUrl + targetUrl)
       let text = await response.text()
-      return text.response.items
+      // return text.response.items
+      return text
     },
-    setUserFriend (){
+    setUserFriend () {
       this.getUserFriends().then(res => {
-        this.$store.dispatch('MUTATE_USER_FRIENDS', res)  
+        this.$store.dispatch('MUTATE_USER_FRIENDS', res)
       })
     },
     async getUserInfo () {
@@ -49,11 +50,12 @@ export default {
 
       let text = await response.text()
       console.log('TCL: getPhotoVK -> text', text)
-      return text.response[0]
+      // return text.response[0]
+      return text
     },
     setUserInfo () {
-      this.getUserInfo().then(res =>{
-         this.$store.dispatch('MUTATE_USER', text.response[0])
+      this.getUserInfo().then(res => {
+        this.$store.dispatch('MUTATE_USER', res)
       })
     },
     getAccessToken () {
@@ -61,9 +63,11 @@ export default {
       if (hash.length !== 0) {
         let arrHash = hash.split('&')
         let arrAccessToken = arrHash[0].split('=')
+        /* eslint-disable-next-line */
         let access_token = arrAccessToken[1]
 
         let arrUserID = arrHash[2].split('=')
+        /* eslint-disable-next-line */
         let user_id = arrUserID[1]
         let data = {
           access_token,
