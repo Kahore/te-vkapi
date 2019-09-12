@@ -51,6 +51,7 @@ export default {
           user_id
         }
         this.$store.dispatch('AUTH_USER', data)
+        window.history.pushState({}, null, "https://te-vk.herokuapp.com");
       }
     }
   },

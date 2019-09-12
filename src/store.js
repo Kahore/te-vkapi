@@ -29,7 +29,7 @@ export default new Vuex.Store({
       commit('MUTATE_USER', payload)
     },
     AUTH_USER ({ commit }, payload) {
-      localStorage.setItem('vk_auth', payload)
+      localStorage.setItem('vk_auth', JSON.stringify(payload))
       commit('AUTH_USER', payload)
     }
   }
