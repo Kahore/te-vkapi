@@ -1,6 +1,8 @@
 <template>
   <div>
-    <a href="https://oauth.vk.com/authorize?client_id=7132009&display=page&redirect_uri=https://te-vk.herokuapp.com&scope=offline,friends&response_type=token&v=5.101">Войти</a>
+    <a
+      v-if="!isAuth"
+      href="https://oauth.vk.com/authorize?client_id=7132009&display=page&redirect_uri=https://te-vk.herokuapp.com&scope=offline,friends&response_type=token&v=5.101">Войти</a>
     <div v-if="isAuth && !isLoadnig">
       <h3>
         Авторизация под: {{ authUserName }}
@@ -83,8 +85,10 @@ export default {
       this.setUserFriend()
     } else {
       this.getAccessToken().then(() => {
-        this.setUserInfo()
-        this.setUserFriend()
+        if (this.isAuth) {
+          this.setUserInfo()
+          this.setUserFriend()
+        }
       })
     }
   }
