@@ -1,5 +1,12 @@
 # te-vk
 
+В соответствии с письмом -
+* веб приложение, на выбранном вами языке, при открытии должно показать кнопку «авторизоваться» 
+* по нажатию делает oauth авторизацию ВКонтакте
+* показывает имя авторизованного пользователя и 5 любых друзей пользователя. 
+* При последующих запусках/заходах на страницу сразу показывает всю информацию т.к. уже понимает, что авторизовано и авторизация запоминается.
+* Бекенд,  если потребуется, на любой технологии на ваш выбор
+ 
 ## Project setup
 ```
 npm install
@@ -15,20 +22,7 @@ npm run serve
 npm run build
 ```
 
-### Run your tests
-```
-npm run test
-```
-
-### Lints and fixes files
-```
-npm run lint
-```
-
-### Run your unit tests
+### To see test's coverage
 ```
 npm run test:unit
 ```
-
-### Customize configuration
-See [Configuration Reference](https://cli.vuejs.org/config/).
