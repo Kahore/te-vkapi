@@ -37,7 +37,7 @@ export default {
       return text.response.items
     },
     setUserFriend (){
-      getUserFriends().then(res => {
+      this.getUserFriends().then(res => {
         this.$store.dispatch('MUTATE_USER_FRIENDS', res)  
       })
     },
@@ -52,7 +52,7 @@ export default {
       return text.response[0]
     },
     setUserInfo () {
-      getUserInfo().then(res =>{
+      this.getUserInfo().then(res =>{
          this.$store.dispatch('MUTATE_USER', text.response[0])
       })
     },
