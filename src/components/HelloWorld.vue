@@ -63,8 +63,12 @@ export default {
         'friends.getLists', // название метода API https://vk.com/dev/methods
         // параметры:
         {
-          v: '5.73', // версия API (обязательный параметр)
-          user_id: userInfo.id // количество фотографий
+          v: '5.101', // версия API (обязательный параметр)
+          user_id: parseInt(userInfo.id), 
+          order: 'hints',
+          offset: 1,
+          count: 10, // количество друзей
+          name_case: 'ins'
         }, function (r) {
           // var count = r.response.count // кол-во полученных фотографий
           // var items = r.response.items // массив с фотографиями
