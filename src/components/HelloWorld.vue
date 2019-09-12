@@ -29,13 +29,9 @@ export default {
     },
     async getPhotoVK () {
       let userAuth = this.$store.getters.userAuth
-let response = await fetch('https://api.vk.com/method/users.get?user_id='+userAuth.user_id+'&access_token='+userAuth.access_token+'&v=5.101',{
-    headers: {
-    'Access-Control-Allow-Origin': 'te-vk.herokuapp.com',
-    'Access-Control-Allow-Headers': 'X-Requested-With,content-type',
-    'Access-Control-Allow-Credentials': true
-  }
-});
+      var proxyUrl = 'https://cors-anywhere.herokuapp.com/',
+    targetUrl = 'https://api.vk.com/method/users.get?user_id='+userAuth.user_id+'&access_token='+userAuth.access_token+'&v=5.101'
+let response = await fetch(proxyUrl + targetUrl);
 
     let text = await response.text();
     console.log("TCL: getPhotoVK -> text", text)
