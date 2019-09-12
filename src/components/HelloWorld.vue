@@ -9,7 +9,7 @@
       @click="logoutVK">Выйти</button>
     <button
       type="button"
-     @click="getUserFriends">Получить список друзей</button>
+     @click="setUserFriend">Получить список друзей</button>
   </div>
 </template>
 
@@ -33,10 +33,13 @@ export default {
       // targetUrl = 'https://api.vk.com/method/users.get?user_id='+userAuth.user_id+'&access_token='+userAuth.access_token+'&v=5.101'
       var targetUrl = 'https://api.vk.com/method/friends.get?user_id=' + userAuth.user_id + '&fields=domain&order=hints&count=5&access_token=' + userAuth.access_token + '&v=5.101'
       let response = await fetch(proxyUrl + targetUrl)
-
       let text = await response.text()
-      console.log('TCL: getPhotoVK -> text', text)
-      this.$store.dispatch('MUTATE_USER_FRIENDS', text.response.items)
+      return text.response.items
+    },
+    setUserFriend (){
+      getUserFriends().then(res => {
+        this.$store.dispatch('MUTATE_USER_FRIENDS', res)  
+      })
     },
     async getUserInfo () {
       let userAuth = this.$store.getters.userAuth
@@ -46,7 +49,12 @@ export default {
 
       let text = await response.text()
       console.log('TCL: getPhotoVK -> text', text)
-      this.$store.dispatch('MUTATE_USER', text.response[0])
+      return text.response[0]
+    },
+    setUserInfo () {
+      getUserInfo().then(res =>{
+         this.$store.dispatch('MUTATE_USER', text.response[0])
+      })
     },
     getAccessToken () {
       let hash = window.location.hash
@@ -75,6 +83,7 @@ export default {
     } else {
       this.getAccessToken()
     }
+    this.setUserInfo()
   }
 }
 </script>
