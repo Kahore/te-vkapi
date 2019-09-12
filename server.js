@@ -1,8 +1,10 @@
 const express = require('express')
+/* eslint-disable-next-line */
 const path = require('path')
 const serveStatic = require('serve-static')
 
 let app = express()
+/* eslint-disable-next-line */
 app.use(serveStatic(__dirname + '/dist'))
 
 app.use(function (req, res, next) {

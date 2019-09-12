@@ -1,14 +1,17 @@
 <template>
-  <div class="hello">
+  <div>
     <a href="https://oauth.vk.com/authorize?client_id=7132009&display=page&redirect_uri=https://te-vk.herokuapp.com&scope=offline,friends&response_type=token&v=5.101">Войти</a>
-    <div v-if="isAuth">
-      Авторизация под: {{ authUserName }}
-    </div>
-    <div v-if="isAuth">
-      <div v-for="(friend,index) in friendList" :key="index">
-        <a :href="'https://vk.com/id'+friend.id">{{friend.first_name +' ' + friend.last_name}}</a>
+    <div v-if="isAuth && !isLoadnig">
+      <h3>
+        Авторизация под: {{ authUserName }}
+      </h3>
+      <div v-if="isAuth">
+        <div v-for="(friend,index) in friendList" :key="index">
+          <a :href="'https://vk.com/id'+friend.id">{{friend.first_name +' ' + friend.last_name}}</a>
+        </div>
       </div>
     </div>
+    <h4 v-if="isLoadnig">Загружаю данные...</h4>
   </div>
 </template>
 
@@ -16,38 +19,38 @@
 import { mapGetters } from 'vuex'
 export default {
   name: 'HelloWorld',
+  data () {
+    return {
+      isLoadnig: false
+    }
+  },
   computed: {
-     ...mapGetters(['friendList', 'isAuth']),
-    authUserName() {
+    ...mapGetters(['friendList', 'isAuth']),
+    authUserName () {
       let user = this.$store.getters.userInfo
       return user.first_name + ' ' + user.last_name
     }
   },
   methods: {
-    async getUserFriends () {
-      let userAuth = this.$store.getters.userAuth
-      var proxyUrl = 'https://cors-anywhere.herokuapp.com/'
-      var targetUrl = 'https://api.vk.com/method/friends.get?user_id=' + userAuth.user_id + '&fields=domain&order=hints&count=5&access_token=' + userAuth.access_token + '&v=5.101'
-      let response = await fetch(proxyUrl + targetUrl)
+    async _loadData (targetURL) {
+      let proxyUrl = 'https://cors-anywhere.herokuapp.com/'
+      let response = await fetch(proxyUrl + targetURL)
       let text = await response.text()
       return JSON.parse(text)
     },
     setUserFriend () {
-      this.getUserFriends().then(res => {
+      let userAuth = this.$store.getters.userAuth
+      let targetUrl = 'https://api.vk.com/method/friends.get?user_id=' + userAuth.user_id + '&fields=domain&order=hints&count=5&access_token=' + userAuth.access_token + '&v=5.101'
+      this._loadData(targetUrl).then(res => {
         this.$store.dispatch('MUTATE_USER_FRIENDS', res)
       })
     },
-    async getUserInfo () {
-      let userAuth = this.$store.getters.userAuth
-      var proxyUrl = 'https://cors-anywhere.herokuapp.com/'
-      var targetUrl = 'https://api.vk.com/method/users.get?user_id=' + userAuth.user_id + '&access_token=' + userAuth.access_token + '&v=5.101'
-      let response = await fetch(proxyUrl + targetUrl)
-      let text = await response.text()
-      return JSON.parse(text)
-    },
     setUserInfo () {
-      this.getUserInfo().then(res => {
+      let userAuth = this.$store.getters.userAuth
+      let targetUrl = 'https://api.vk.com/method/users.get?user_id=' + userAuth.user_id + '&access_token=' + userAuth.access_token + '&v=5.101'
+      this._loadData(targetUrl).then(res => {
         this.$store.dispatch('MUTATE_USER', res)
+        this.isLoadnig = false
       })
     },
     getAccessToken () {
@@ -71,6 +74,7 @@ export default {
     }
   },
   mounted () {
+    this.isLoadnig = true
     if (localStorage.getItem('vk_auth')) {
       this.$store.dispatch('AUTH_USER', JSON.parse(localStorage.getItem('vk_auth')))
     } else {
