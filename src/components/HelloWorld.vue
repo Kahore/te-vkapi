@@ -27,7 +27,7 @@ export default {
       // {session: null, status: "unknown", settings: undefined}
       })
     },
-    getPhotoVK () {
+    async getPhotoVK () {
       let userAuth = this.$store.getters.userAuth
 let response = await fetch('https://api.vk.com/method/users.get?user_id='+userAuth.user_id+'&access_token='+userAuth.access_token+'&v=5.101');
 
