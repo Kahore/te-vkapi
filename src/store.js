@@ -19,6 +19,9 @@ export default new Vuex.Store({
     },
     friendList: state => {
       return state.friendList
+    },
+    isAuth: state => {
+      return state.isAuth
     }
   },
   mutations: {
