@@ -28,6 +28,12 @@ export default {
       })
     },
     getPhotoVK () {
+      let userAuth = this.$store.getters.userAuth
+let response = await fetch('https://api.vk.com/method/users.get?user_id='+userAuth.user_id+'&access_token='+userAuth.access_token+'&v=5.101');
+
+    let text = await response.text();
+    console.log("TCL: getPhotoVK -> text", text)
+
 
     }
   },
@@ -38,8 +44,16 @@ export default {
     let hash = window.location.hash
     let arrHash = hash.split('&')
     let arrAccessToken = arrHash[0].split('=')
-    let accessToken = arrAccessToken[1]
-    console.log('TCL: mounted -> accessToken', accessToken)
+    let access_token = arrAccessToken[1]
+    
+    let arrUserID = arrHash[2].split('=')
+    let user_id = arrUserID[1]
+    let data = {
+      access_token,
+      user_id
+    }
+    this.$store.dispatch('AUTH_USER', data)
+    console.log('TCL: mounted -> data', data)
   }
 }
 </script>
