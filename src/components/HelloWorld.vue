@@ -18,7 +18,7 @@ export default {
   name: 'HelloWorld',
   methods: {
     loginVK () {
-      var selfVue = this
+      // var selfVue = this
     },
     logoutVK () {
       /* eslint-disable-next-line */
@@ -29,34 +29,40 @@ export default {
     },
     async getPhotoVK () {
       let userAuth = this.$store.getters.userAuth
-      var proxyUrl = 'https://cors-anywhere.herokuapp.com/',
-    // targetUrl = 'https://api.vk.com/method/users.get?user_id='+userAuth.user_id+'&access_token='+userAuth.access_token+'&v=5.101'
-      targetUrl = 'https://api.vk.com/method/friends.get?user_id='+userAuth.user_id+'&access_token='+userAuth.access_token+'&order=hints&count=5&v=5.101'
-let response = await fetch(proxyUrl + targetUrl);
+      var proxyUrl = 'https://cors-anywhere.herokuapp.com/'
+      // targetUrl = 'https://api.vk.com/method/users.get?user_id='+userAuth.user_id+'&access_token='+userAuth.access_token+'&v=5.101'
+      var targetUrl = 'https://api.vk.com/method/friends.get?user_id=' + userAuth.user_id + '&fields=domain&order=hints&count=5&access_token=' + userAuth.access_token + '&v=5.101'
+      let response = await fetch(proxyUrl + targetUrl)
 
-    let text = await response.text();
-    console.log("TCL: getPhotoVK -> text", text)
+      let text = await response.text()
+      console.log('TCL: getPhotoVK -> text', text)
+    },
+    getAccessToken () {
+      let hash = window.location.hash
+      if (hash.length !== 0) {
+        let arrHash = hash.split('&')
+        let arrAccessToken = arrHash[0].split('=')
+        let access_token = arrAccessToken[1]
 
-
+        let arrUserID = arrHash[2].split('=')
+        let user_id = arrUserID[1]
+        let data = {
+          access_token,
+          user_id
+        }
+        this.$store.dispatch('AUTH_USER', data)
+      }
     }
   },
   mounted () {
     // VK.init({
     //   apiId: 7132009
     // })
-    let hash = window.location.hash
-    let arrHash = hash.split('&')
-    let arrAccessToken = arrHash[0].split('=')
-    let access_token = arrAccessToken[1]
-    
-    let arrUserID = arrHash[2].split('=')
-    let user_id = arrUserID[1]
-    let data = {
-      access_token,
-      user_id
+    if (localStorage.getItem('vk_auth')) {
+      this.$store.dispatch('AUTH_USER', JSON.parse(localStorage.getItem('vk_auth')))
+    } else {
+      this.getAccessToken()
     }
-    this.$store.dispatch('AUTH_USER', data)
-    console.log('TCL: mounted -> data', data)
   }
 }
 </script>
