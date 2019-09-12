@@ -17,7 +17,7 @@ export default {
   name: 'HelloWorld',
   methods: {
     loginVK () {
-      let selfVue = this
+      var selfVue = this
       VK.Auth.login(
       // callback-функция, которая будет вызвана после авторизации
         function (response) {
