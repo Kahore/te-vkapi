@@ -9,7 +9,7 @@
       @click="logoutVK">Выйти</button>
     <button
       type="button"
-     @click="getPhotoVK">Получить список друзей</button>
+     @click="getUserFriends">Получить список друзей</button>
   </div>
 </template>
 
@@ -27,7 +27,7 @@ export default {
       // {session: null, status: "unknown", settings: undefined}
       })
     },
-    async getPhotoVK () {
+    async getUserFriends () {
       let userAuth = this.$store.getters.userAuth
       var proxyUrl = 'https://cors-anywhere.herokuapp.com/'
       // targetUrl = 'https://api.vk.com/method/users.get?user_id='+userAuth.user_id+'&access_token='+userAuth.access_token+'&v=5.101'
@@ -36,6 +36,17 @@ export default {
 
       let text = await response.text()
       console.log('TCL: getPhotoVK -> text', text)
+      this.$store.dispatch('MUTATE_USER_FRIENDS', text.response.items)
+    },
+    async getUserInfo () {
+      let userAuth = this.$store.getters.userAuth
+      var proxyUrl = 'https://cors-anywhere.herokuapp.com/'
+      var targetUrl = 'https://api.vk.com/method/users.get?user_id=' + userAuth.user_id + '&access_token=' + userAuth.access_token + '&v=5.101'
+      let response = await fetch(proxyUrl + targetUrl)
+
+      let text = await response.text()
+      console.log('TCL: getPhotoVK -> text', text)
+      this.$store.dispatch('MUTATE_USER', text.response[0])
     },
     getAccessToken () {
       let hash = window.location.hash
@@ -51,7 +62,7 @@ export default {
           user_id
         }
         this.$store.dispatch('AUTH_USER', data)
-        window.history.pushState({}, null, "https://te-vk.herokuapp.com");
+        window.history.pushState({}, null, 'https://te-vk.herokuapp.com')
       }
     }
   },

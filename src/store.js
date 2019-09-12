@@ -6,7 +6,8 @@ Vue.use(Vuex)
 export default new Vuex.Store({
   state: {
     userInfo: {},
-    userAuth: {}
+    userAuth: {},
+    friendList: []
   },
   getters: {
     userInfo: state => {
@@ -14,11 +15,17 @@ export default new Vuex.Store({
     },
     userAuth: state => {
       return state.userAuth
+    },
+    friendList: state => {
+      return state.friendList
     }
   },
   mutations: {
     MUTATE_USER (state, payload) {
       state.userInfo = payload
+    },
+    MUTATE_USER_FRIENDS (state, payload) {
+      state.friendList = payload
     },
     AUTH_USER (state, payload) {
       state.userAuth = payload
@@ -27,6 +34,9 @@ export default new Vuex.Store({
   actions: {
     MUTATE_USER ({ commit }, payload) {
       commit('MUTATE_USER', payload)
+    },
+    MUTATE_USER_FRIENDS ({ commit }, payload) {
+      commit('MUTATE_USER_FRIENDS', payload)
     },
     AUTH_USER ({ commit }, payload) {
       localStorage.setItem('vk_auth', JSON.stringify(payload))
