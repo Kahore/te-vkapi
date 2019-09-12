@@ -35,7 +35,7 @@ export default {
       let response = await fetch(proxyUrl + targetUrl)
       let text = await response.text()
       // return text.response.items
-      return text
+      return JSON.parse(text)
     },
     setUserFriend () {
       this.getUserFriends().then(res => {
@@ -51,7 +51,7 @@ export default {
       let text = await response.text()
       console.log('TCL: getPhotoVK -> text', text)
       // return text.response[0]
-      return text
+      return JSON.parse(text)
     },
     setUserInfo () {
       this.getUserInfo().then(res => {
