@@ -3,7 +3,7 @@
     <button
       type="button"
       @click="loginVK">Войти</button>
-      <a href="https://oauth.vk.com/authorize?client_id=7132009&display=page&redirect_uri=https://te-vk.herokuapp.com&scope=friends&response_type=token&v=5.101">Войти</a>
+      <a href="https://oauth.vk.com/authorize?client_id=7132009&display=page&redirect_uri=https://te-vk.herokuapp.com&scope=offline,friends&response_type=token&v=5.101">Войти</a>
     <button
       type="button"
       @click="logoutVK">Выйти</button>
