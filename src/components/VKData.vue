@@ -53,7 +53,7 @@ export default {
         this.isLoadnig = false
       })
     },
-    getAccessToken () {
+    async getAccessToken () {
       let hash = window.location.hash
       if (hash.length !== 0) {
         let arrHash = hash.split('&')
@@ -68,8 +68,10 @@ export default {
           access_token,
           user_id
         }
-        this.$store.dispatch('AUTH_USER', data)
+        await this.$store.dispatch('AUTH_USER', data)
         window.history.pushState({}, null, 'https://te-vk.herokuapp.com')
+      } else {
+        this.isLoadnig = false
       }
     }
   },
@@ -80,7 +82,10 @@ export default {
       this.setUserInfo()
       this.setUserFriend()
     } else {
-      this.getAccessToken()
+      this.getAccessToken().then(() => {
+        this.setUserInfo()
+        this.setUserFriend()
+      })
     }
   }
 }
