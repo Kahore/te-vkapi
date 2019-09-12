@@ -77,11 +77,11 @@ export default {
     this.isLoadnig = true
     if (localStorage.getItem('vk_auth')) {
       this.$store.dispatch('AUTH_USER', JSON.parse(localStorage.getItem('vk_auth')))
+      this.setUserInfo()
+      this.setUserFriend()
     } else {
       this.getAccessToken()
     }
-    this.setUserInfo()
-    this.setUserFriend()
   }
 }
 </script>
