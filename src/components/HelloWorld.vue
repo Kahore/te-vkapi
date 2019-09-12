@@ -32,7 +32,7 @@ export default {
              user.id  - идентификатор пользователя;
              user.nickname -  отчество или никнейм (если указано);
              */
-            self.$store.dispatch('MUTATE_USER', user)
+            self.$store.dispatch('MUTATE_USER', response.session.user)
           } else if (response.status === 'not_authorized') { // пользователь авторизован в ВКонтакте, но не разрешил доступ приложению;
 
           } else if (response.status === 'unknown') { // пользователь не авторизован ВКонтакте.
@@ -66,9 +66,9 @@ export default {
           v: '5.73', // версия API (обязательный параметр)
           user_id: userInfo.id // количество фотографий
         }, function (r) {
-          var count = r.response.count // кол-во полученных фотографий
-          var items = r.response.items // массив с фотографиями
-          console.log("TCL: getPhotoVK -> items", items)
+          // var count = r.response.count // кол-во полученных фотографий
+          // var items = r.response.items // массив с фотографиями
+          console.log("TCL: getPhotoVK -> items", r)
         })
     }
   },
