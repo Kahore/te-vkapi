@@ -17,12 +17,12 @@ export default {
   name: 'HelloWorld',
   methods: {
     loginVK () {
-      let self = this
+      let selfVue = this
       VK.Auth.login(
       // callback-функция, которая будет вызвана после авторизации
         function (response) {
           console.log(response)
-
+          selfVue.$store.dispatch('MUTATE_USER', response.session.user)
           if (response.status === 'connected') { // авторизация прошла успешно
             var user = response.session.user //  информация о пользователе
             /*
@@ -32,7 +32,7 @@ export default {
              user.id  - идентификатор пользователя;
              user.nickname -  отчество или никнейм (если указано);
              */
-            self.$store.dispatch('MUTATE_USER', response.session.user)
+           
           } else if (response.status === 'not_authorized') { // пользователь авторизован в ВКонтакте, но не разрешил доступ приложению;
 
           } else if (response.status === 'unknown') { // пользователь не авторизован ВКонтакте.
